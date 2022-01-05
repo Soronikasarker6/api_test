@@ -1,11 +1,11 @@
+import 'dart:core';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:api_test/get_card.dart';
 import 'package:api_test/details.dart';
 import 'package:api_test/Model.dart';
-import 'package:page_transition/page_transition.dart';
-
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 const url = 'http://50.21.176.24/tables#';
 class FatchDataScreen extends StatefulWidget {
@@ -15,6 +15,8 @@ class FatchDataScreen extends StatefulWidget {
 }
 
 class _FatchDataScreenState extends State<FatchDataScreen> {
+  int _selectedIndex = 0;
+  PageController pageController = PageController();
   sdsd()async{
     var v = await getData();
     List g = v.map((x) => Tables.fromJson(x)).toList();
@@ -24,16 +26,12 @@ class _FatchDataScreenState extends State<FatchDataScreen> {
 
   List users = [];
   bool isLoading = false;
-  // final List<DetailsModel> restaurantData = List.generate(users.length,
-  //         (index) =>DetailsModel(name, location, code, max_waiter,
-  //             is_active, is_outside, created_at, updated_at, orders)
-  // );
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    this.getData();
+    getData();
 
   }
 
@@ -47,8 +45,6 @@ class _FatchDataScreenState extends State<FatchDataScreen> {
       setState(() {
         users=g;
       });
-
-
 
       // var name = decodeData['tables'][0]['name'];
       // var created = decodeData['tables'][1]['created_at'];
@@ -65,16 +61,56 @@ class _FatchDataScreenState extends State<FatchDataScreen> {
   @override
 
   Widget build(BuildContext context) {
+    final items = <Widget>[
+      Icon(Icons.home, size: 30, color: Colors.black, semanticLabel: 'home',),
+      Icon(Icons.search, size: 30,color: Colors.black),
+      Icon(Icons.favorite_outlined, size: 30,color: Colors.black),
+      Icon(Icons.person, size: 30,color: Colors.black),
+    ];
+
     getData();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF2F2A65),
+        backgroundColor: Color(0xFFDDC2A2),
         centerTitle: true,
         title: Text('Restaurant'),
       ),
-      body: getBody(),
-      backgroundColor: Color(0xFF2F2A65),
+      body:PageView(
+        controller: pageController,
+        children: [
+          Container(
+            child: Hero(
+              tag:'img',
+              child: getBody(),
+            ) ,
+          ),
+          Container(color: Colors.black,),
+          Container(color: Colors.teal,),
+          Container(color: Colors.grey,)
+        ],
+      ),
+
+      backgroundColor: Color(0xFFFAFAFC),
+      bottomNavigationBar:
+      CurvedNavigationBar
+        (
+        height: 60, index: _selectedIndex,
+        onTap: onTapped, items: items,
+      ),
+
+      // BottomNavigationBar(items:const<BottomNavigationBarItem> [
+      //   BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+      //   BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
+      //   BottomNavigationBarItem(icon: Icon(Icons.favorite_outline), label: 'Favorites'),
+      // ],currentIndex:_selectedIndex,
+      //   selectedItemColor: Colors.black,
+      //   unselectedItemColor: Colors.grey,
+      //   onTap: onTapped,
+      //   backgroundColor: Colors.white,
+      //   showUnselectedLabels: false,
+      // ),
     );
+
   }
   Widget getBody() {
     // List items = ["1", "2", "3"];
@@ -84,14 +120,26 @@ class _FatchDataScreenState extends State<FatchDataScreen> {
 
           return GestureDetector(
               onTap: (){
-                Navigator.of(context).push(PageTransition(type: PageTransitionType.fade,alignment: Alignment.bottomCenter,
-                    child:Details( name: users[index].name,location: users[index].location, code: users[index].code,
+                Navigator.of(context).push(PageRouteBuilder(fullscreenDialog: false, transitionDuration: Duration(milliseconds:1000),pageBuilder:
+                    (BuildContext context,Animation<double> animation,Animation<double> secondaryAnimation)
+                  =>Details
+                    ( name: users[index].name,location: users[index].location, code: users[index].code,
                         maxWaiter: users[index].maxWaiter, isActive: users[index].isActive,isOutside: users[index].isOutside,
-                    createdAt: users[index].createdAt, updatedAt: users[index].updatedAt,orders: users[index].orders
-                    )
-                ));
-              },
+                    createdAt: users[index].createdAt, updatedAt: users[index].updatedAt,orders: users[index].orders,
+                  ),
+                    transitionsBuilder: (BuildContext context,Animation<double> animation,Animation<double> secondaryAnimation,
+                      Widget  child)
+                {
+                  // animation = CurvedAnimation(parent: animation, curve:  Curves.easeInOut);
+                  return ScaleTransition(
+                      scale: animation,
+                  alignment: Alignment.center,
+                  child: child);
+                }
 
+                )
+                );
+              },
 
               child: getCard(users[index])
           );
@@ -99,4 +147,13 @@ class _FatchDataScreenState extends State<FatchDataScreen> {
   }
 
 
+
+  void onTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    pageController.animateToPage(index,
+        curve: Curves.fastOutSlowIn,
+    duration: Duration(milliseconds: 1000));
+  }
 }

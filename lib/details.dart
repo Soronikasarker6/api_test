@@ -1,8 +1,8 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:api_test/Model.dart';
 
 class Details extends StatelessWidget {
-  // final Animation<double> transitionAnimation;
 
   String name;
   String location;
@@ -28,6 +28,7 @@ class Details extends StatelessWidget {
 
 @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text('${name}',
@@ -36,47 +37,62 @@ class Details extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Color(0xFF2F2A65),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(10.0),
-          child: Card(
-            color: Color(0xFF313157),
-            child: Column(
-              children: [
-
-                ListTile(
-                  title: Text("location"),
-                  subtitle: Text('$location'),
-                ),
-                ListTile(
-                  title: Text("code"),
-                  subtitle: Text('$code'),
-                ),
-                ListTile(
-                  title: Text("max_waiter"),
-                  subtitle: Text('$maxWaiter'),
-                ),
-                ListTile(
-                  title: Text("is_active"),
-                  subtitle: Text('$isActive'),
-                ),
-                ListTile(
-                  title: Text("is_outside"),
-                  subtitle: Text('$isOutside'),
-                ),
-                ListTile(
-                  title: Text("created_at"),
-                  subtitle: Text('$createdAt'),
-                ),
-                ListTile(
-                  title: Text("updated_at"),
-                  subtitle: Text('$updatedAt'),
-                ),
-                ListTile(
-                  title: Text("orders"),
-                  subtitle: Text('$orders'),
-                ),
-              ],
+      body: GestureDetector(
+        onTap:  (){
+          Navigator.pop(context);
+        },
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Card(
+              color: Color(0xFF313157),
+              child: Column(
+                children: [
+                  Hero(
+                    tag: 'img',
+                    child: Container(height: 360,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage('asset/restaurant.jpg'),
+                          )
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                    title: Text("location"),
+                    subtitle: Text('$location'),
+                  ),
+                  ListTile(
+                    title: Text("code"),
+                    subtitle: Text('$code'),
+                  ),
+                  ListTile(
+                    title: Text("max_waiter"),
+                    subtitle: Text('$maxWaiter'),
+                  ),
+                  ListTile(
+                    title: Text("is_active"),
+                    subtitle: Text('$isActive'),
+                  ),
+                  ListTile(
+                    title: Text("is_outside"),
+                    subtitle: Text('$isOutside'),
+                  ),
+                  ListTile(
+                    title: Text("created_at"),
+                    subtitle: Text('$createdAt'),
+                  ),
+                  ListTile(
+                    title: Text("updated_at"),
+                    subtitle: Text('$updatedAt'),
+                  ),
+                  ListTile(
+                    title: Text("orders"),
+                    subtitle: Text('$orders'),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

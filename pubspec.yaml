@@ -34,6 +34,8 @@ dependencies:
   flutter_spinkit: ^5.1.0
   json_annotation: ^4.3.0
   page_transition: ^2.0.4
+  animated_splash_screen: ^1.0.0+1
+  curved_navigation_bar: ^1.0.1
 
 
 dev_dependencies:
@@ -41,14 +43,27 @@ dev_dependencies:
   json_serializable: ^6.0.0
   flutter_test:
     sdk: flutter
+  flutter_native_splash: ^1.2.0
 
+
+flutter_native_splash:
+  android: true
+  ios: true
+  web: false
+
+  color: "#42a5f5"
+#  background_image: "assets/background.png"
+  image: asset/logo.png
+
+  android_gravity: bottom
+  ios_gravity: center
+  web_gravity: center
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^1.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -62,9 +77,9 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+        - asset/
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
