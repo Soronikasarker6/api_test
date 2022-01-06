@@ -6,6 +6,7 @@ import 'package:api_test/get_card.dart';
 import 'package:api_test/details.dart';
 import 'package:api_test/Model.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:animations/animations.dart';
 
 const url = 'http://50.21.176.24/tables#';
 class FatchDataScreen extends StatefulWidget {
@@ -17,6 +18,8 @@ class FatchDataScreen extends StatefulWidget {
 class _FatchDataScreenState extends State<FatchDataScreen> {
   int _selectedIndex = 0;
   PageController pageController = PageController();
+
+
   sdsd()async{
     var v = await getData();
     List g = v.map((x) => Tables.fromJson(x)).toList();
@@ -27,12 +30,26 @@ class _FatchDataScreenState extends State<FatchDataScreen> {
   List users = [];
   bool isLoading = false;
 
+
+  void onTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    pageController.jumpToPage(index);
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getData();
+    pageController = PageController();
 
+  }
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
   }
 
    getData()async{
@@ -61,7 +78,8 @@ class _FatchDataScreenState extends State<FatchDataScreen> {
   @override
 
   Widget build(BuildContext context) {
-    final items = <Widget>[
+
+    final List<Widget> items = <Widget>[
       Icon(Icons.home, size: 30, color: Colors.black, semanticLabel: 'home',),
       Icon(Icons.search, size: 30,color: Colors.black),
       Icon(Icons.favorite_outlined, size: 30,color: Colors.black),
@@ -73,10 +91,16 @@ class _FatchDataScreenState extends State<FatchDataScreen> {
       appBar: AppBar(
         backgroundColor: Color(0xFFDDC2A2),
         centerTitle: true,
-        title: Text('Restaurant'),
+        title: Text('Restaurant',
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, letterSpacing: 2.0),),
       ),
       body:PageView(
         controller: pageController,
+        onPageChanged: (index){
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
         children: [
           Container(
             child: Hero(
@@ -94,6 +118,7 @@ class _FatchDataScreenState extends State<FatchDataScreen> {
       bottomNavigationBar:
       CurvedNavigationBar
         (
+        backgroundColor: Color(0xFFDDC2A2),
         height: 60, index: _selectedIndex,
         onTap: onTapped, items: items,
       ),
@@ -113,6 +138,7 @@ class _FatchDataScreenState extends State<FatchDataScreen> {
 
   }
   Widget getBody() {
+
     // List items = ["1", "2", "3"];
     return ListView.builder(
         itemCount: users ==null ? 0 : users.length,
@@ -120,21 +146,24 @@ class _FatchDataScreenState extends State<FatchDataScreen> {
 
           return GestureDetector(
               onTap: (){
-                Navigator.of(context).push(PageRouteBuilder(fullscreenDialog: false, transitionDuration: Duration(milliseconds:1000),pageBuilder:
-                    (BuildContext context,Animation<double> animation,Animation<double> secondaryAnimation)
-                  =>Details
-                    ( name: users[index].name,location: users[index].location, code: users[index].code,
-                        maxWaiter: users[index].maxWaiter, isActive: users[index].isActive,isOutside: users[index].isOutside,
-                    createdAt: users[index].createdAt, updatedAt: users[index].updatedAt,orders: users[index].orders,
+                Navigator.of(context).push(
+                    PageRouteBuilder(fullscreenDialog: false,
+                        transitionDuration: Duration(milliseconds:1000),
+                        reverseTransitionDuration: Duration(milliseconds: 1000),
+                        pageBuilder:(BuildContext context,Animation<double> animation,Animation<double> secondaryAnimation)
+                  =>FadeTransition(
+                    opacity: animation,
+                    child: Details
+                      ( name: users[index].name,location: users[index].location, code: users[index].code,
+                          maxWaiter: users[index].maxWaiter, isActive: users[index].isActive,isOutside: users[index].isOutside,
+                      createdAt: users[index].createdAt, updatedAt: users[index].updatedAt,orders: users[index].orders,),
                   ),
-                    transitionsBuilder: (BuildContext context,Animation<double> animation,Animation<double> secondaryAnimation,
+
+                        transitionsBuilder: (BuildContext context,Animation<double> animation,Animation<double> secondaryAnimation,
                       Widget  child)
                 {
                   // animation = CurvedAnimation(parent: animation, curve:  Curves.easeInOut);
-                  return ScaleTransition(
-                      scale: animation,
-                  alignment: Alignment.center,
-                  child: child);
+                  return child;
                 }
 
                 )
@@ -148,12 +177,4 @@ class _FatchDataScreenState extends State<FatchDataScreen> {
 
 
 
-  void onTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-    pageController.animateToPage(index,
-        curve: Curves.fastOutSlowIn,
-    duration: Duration(milliseconds: 1000));
-  }
 }

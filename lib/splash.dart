@@ -1,5 +1,4 @@
-import 'dart:async';
-import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'fatch_data.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
