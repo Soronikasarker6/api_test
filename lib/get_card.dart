@@ -60,3 +60,74 @@ Widget getCard(index){
     ),
   );
 }
+
+//
+// import 'package:flutter/material.dart';
+// import 'dart:ui';
+// void main() {
+//   runApp(const MyApp());
+// }
+//
+// class MyApp extends StatelessWidget {
+//   const MyApp({Key? key}) : super(key: key);
+//
+//   // This widget is the root of your application.
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: '',
+//       theme: ThemeData(
+//         primarySwatch: Colors.blue,
+//       ),
+//       home: HeroWidget(),
+//     );
+//   }
+// }
+//
+// class HeroWidget extends StatelessWidget {
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: GestureDetector(
+//         onTap: ()=> Navigator.of(context).push(PageRouteBuilder(
+//             pageBuilder: (context, animation, secondaryAnimation)=>
+//                 HeroWidgetDetails(),
+//             transitionsBuilder:(context, animation, secondaryAnimation, child)=>
+//             child)),
+//         child: Hero(
+//           tag: 'img',
+//           child: CircleAvatar(
+//             radius: 100,
+//             backgroundImage: NetworkImage(
+//                 'https://img.freepik.com/free-psd/logo-mockup-grey-wall_35913-2122.'
+//                     'jpg?size=626&ext=jpg'),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+//
+// class HeroWidgetDetails extends StatelessWidget {
+//   const HeroWidgetDetails({Key? key}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Details'),
+//       ),
+//       body: Container(
+//         color: Colors.blueGrey,
+//         child: Center(
+//           child: Hero
+//             (
+//             tag: 'img',
+//             child: Image.network('https://img.freepik.com/free-psd/logo-mockup-grey-wall_35913-2122.jpg?size=626&ext=jpg'),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
