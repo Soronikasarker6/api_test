@@ -49,7 +49,6 @@ class Details extends StatelessWidget {
               child: Column(
                 children: [
                   Hero(
-
                     tag: 'img',
                     child: Container(height: 360,
                       decoration: BoxDecoration(
